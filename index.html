@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RentHub App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="nav-bar">
+        <h2 class="brand">RentHub</h2>
+        <div class="links">
+            <a href="#all-items">Dukan / Browse</a>
+            <a href="#form-section">Add Item</a>
+        </div>
+    </div>
+
+    <div class="search-box">
+        <input type="text" id="find-box" placeholder="Search product or area here...">
+    </div>
+
+    <div class="content-body">
+        
+        <div id="form-section" class="box">
+            <h3>Put item on rent</h3>
+            <form id="item-form">
+                <div class="input-row">
+                    <label>Item Name:</label>
+                    <input type="text" id="samaan_naam" placeholder="What are you giving?" required>
+                </div>
+                
+                <div class="input-row">
+                    <label>Price per day (₹):</label>
+                    <input type="number" id="kharcha" placeholder="Rent price" required>
+                </div>
+
+                <div class="input-row">
+                    <label>Your Location:</label>
+                    <input type="text" id="kahan_hai" placeholder="Hostel or Area" required>
+                </div>
+
+                <div class="info-alert" id="system-tip">
+                    Enter product to check community price.
+                </div>
+
+                <button type="submit" class="post-btn">Upload Now</button>
+            </form>
+        </div>
+
+        <div id="all-items" class="box">
+            <h3>Items Available</h3>
+            <div id="grid-list" class="my-grid">
+                </div>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
