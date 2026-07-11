@@ -3,59 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RentHub App</title>
-    <link rel="stylesheet" href="style.css">
+    <title>RentHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: monospace;
+        }
+
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px dashed #444;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 1px dashed #444;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        nav a {
+            color: #4da6ff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 15px;
+        }
+
+        .search-section {
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px;
+            background-color: #2a2a2a;
+            border: 1px dashed #555;
+            border-radius: 4px;
+            color: #fff;
+        }
+
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #ffcc00;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background-color: #1e1e1e;
+            border: 1px dashed #555;
+            border-radius: 6px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #333;
+        }
+
+        .product-info {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .product-price {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .product-rating {
+            color: #ffcc00;
+        }
+
+        .rent-btn {
+            background-color: transparent;
+            color: #4da6ff;
+            border: 1px dashed #4da6ff;
+            padding: 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        .rent-btn:hover {
+            background-color: #4da6ff;
+            color: #121212;
+        }
+
+        .fee-box {
+            background-color: #151515;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px dashed #444;
+            font-size: 13px;
+            margin-top: 5px;
+            line-height: 1.6;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="nav-bar">
-        <h2 class="brand">RentHub</h2>
-        <div class="links">
-            <a href="#all-items">Dukan / Browse</a>
-            <a href="#form-section">Add Item</a>
-        </div>
+<div class="container">
+    
+    <header>
+        <div class="logo">🏠 RentHub</div>
+        <nav>
+            <a href="index.html">Home</a> | 
+             <a href="login.html">seller</a> 
+            <a href="#">Products</a> | 
+            <a href="#">Categories</a> | 
+            <a href="#">About</a> | 
+            <a href="#">Contact</a> | 
+            <a href="auth.html">Login</a>
+        </nav>
+    </header>
+
+    <div class="search-section">
+        <input type="text" id="search-input" class="search-bar" placeholder="🔍 Search Products...">
     </div>
 
-    <div class="search-box">
-        <input type="text" id="find-box" placeholder="Search product or area here...">
-    </div>
+    <div class="section-title">⭐ Featured Rental Items</div>
+    
+    <div id="products-wrapper" class="products-grid"></div>
 
-    <div class="content-body">
-        
-        <div id="form-section" class="box">
-            <h3>Put item on rent</h3>
-            <form id="item-form">
-                <div class="input-row">
-                    <label>Item Name:</label>
-                    <input type="text" id="samaan_naam" placeholder="What are you giving?" required>
-                </div>
+</div>
+
+<script>
+    const defaultProducts = [
+        { id: 1, name: "💻 Laptop", price: 500, location: "delhi", rating: 5, image: "https://images.unsplash.com/photo-1496181130204-755241524eab?w=500" },
+        { id: 2, name: "📱 iPhone 14", price: 700, location: "mumbai", rating: 4, image: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=500" },
+        { id: 3, name: "📷 Camera", price: 400, location: "delhi", rating: 5, image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500" },
+        { id: 4, name: "🚲 Bicycle", price: 200, location: "bangalore", rating: 4, image: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=500" },
+        { id: 5, name: "🎮 PS5", price: 800, location: "bangalore", rating: 5, image: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500" },
+        { id: 6, name: "📺 Smart TV", price: 600, location: "mumbai", rating: 4, image: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=500" }
+    ];
+
+    if (!localStorage.getItem('products')) {
+        localStorage.setItem('products', JSON.stringify(defaultProducts));
+    }
+
+    const productsWrapper = document.getElementById('products-wrapper');
+    const searchInput = document.getElementById('search-input');
+
+    function displayProducts() {
+        const products = JSON.parse(localStorage.getItem('products')) || defaultProducts;
+        productsWrapper.innerHTML = '';
+
+        const searchText = searchInput.value.trim().toLowerCase();
+
+        products.forEach(product => {
+            if (product.name.toLowerCase().includes(searchText)) {
+                let stars = '★'.repeat(product.rating) + '☆'.repeat(5 - product.rating);
                 
-                <div class="input-row">
-                    <label>Price per day (₹):</label>
-                    <input type="number" id="kharcha" placeholder="Rent price" required>
-                </div>
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${product.image}" class="product-img" alt="${product.name}">
+                    <div class="product-info">| ${product.name}</div>
+                    <div class="product-price">| ₹${product.price} / Day</div>
+                    <div class="product-rating">| ${stars}</div>
+                    
+                    <div style="margin: 5px 0; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 13px; color: #aaa;">[Days]:</span>
+                        <input type="number" id="days-${product.id}" min="1" value="1" style="padding: 4px; width: 70px; background-color: #121212; border: 1px dashed #555; color: #fff; border-radius: 4px;">
+                    </div>
+                    
+                    <button class="rent-btn" onclick="calculateCardCost(${product.id}, ${product.price})">[Rent Now]</button>
+                    
+                    <div id="fee-box-${product.id}" class="fee-box" style="display: none;">
+                        <div>Rent Amount: <span id="rent-${product.id}" style="float: right; color: #4da6ff;"></span></div>
+                        <div>Deposit (20%): <span id="deposit-${product.id}" style="float: right; color: #ffcc00;"></span></div>
+                        <div style="font-weight: bold; margin-top: 5px; border-top: 1px dashed #444; padding-top: 5px;">Total: <span id="total-${product.id}" style="float: right; color: #5cb85c;"></span></div>
+                    </div>
+                `;
+                productsWrapper.appendChild(card);
+            }
+        });
+    }
 
-                <div class="input-row">
-                    <label>Your Location:</label>
-                    <input type="text" id="kahan_hai" placeholder="Hostel or Area" required>
-                </div>
+    function calculateCardCost(id, dayPrice) {
+        const daysInput = document.getElementById(`days-${id}`);
+        const feeBox = document.getElementById(`fee-box-${id}`);
+        const rentSpan = document.getElementById(`rent-${id}`);
+        const depositSpan = document.getElementById(`deposit-${id}`);
+        const totalSpan = document.getElementById(`total-${id}`);
 
-                <div class="info-alert" id="system-tip">
-                    Enter product to check community price.
-                </div>
+        const days = parseInt(daysInput.value) || 1;
+        
+        const totalRent = dayPrice * days; 
+        const securityDeposit = dayPrice * 0.20; 
+        const grandTotal = totalRent + securityDeposit; 
 
-                <button type="submit" class="post-btn">Upload Now</button>
-            </form>
-        </div>
+        rentSpan.innerText = `₹${totalRent}`;
+        depositSpan.innerText = `₹${securityDeposit.toFixed(0)}`;
+        totalSpan.innerText = `₹${grandTotal.toFixed(0)}`;
 
-        <div id="all-items" class="box">
-            <h3>Items Available</h3>
-            <div id="grid-list" class="my-grid">
-                </div>
-        </div>
+        feeBox.style.display = 'block';
+    }
 
-    </div>
-
-    <script src="app.js"></script>
+    document.addEventListener('DOMContentLoaded', () => {
+        searchInput.addEventListener('input', displayProducts);
+        displayProducts();
+    });
+</script>
 </body>
 </html>
