@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RentHub - Seller Authentication</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container" style="max-width: 500px; margin: 50px auto;">
+    
+    <header style="border-bottom: none; margin-bottom: 10px;">
+        <div class="logo"><a href="index.html" style="color: inherit; text-decoration: none;">🏠 RentHub</a></div>
+        <h2 style="color: #ffcc00; font-size: 20px; margin-top: 10px;">Seller Portal</h2>
+    </header>
+
+    <div id="signup-box" class="filter-section" style="margin-bottom: 0;">
+        <div class="filter-title" style="font-size: 18px; color: #fff; margin-bottom: 15px;">Create Seller Account</div>
+        <form id="signup-form" style="display: flex; flex-direction: column; gap: 15px;">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label>Full Name:</label>
+                <input type="text" id="up-name" required style="padding: 10px; background-color: #1e1e1e; border: 1px solid #444; color: #fff; border-radius: 4px;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label>Email ID:</label>
+                <input type="email" id="up-email" required style="padding: 10px; background-color: #1e1e1e; border: 1px solid #444; color: #fff; border-radius: 4px;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label>Password:</label>
+                <input type="password" id="up-pass" required style="padding: 10px; background-color: #1e1e1e; border: 1px solid #444; color: #fff; border-radius: 4px;">
+            </div>
+            <button type="submit" class="rent-btn" style="padding: 12px; font-size: 16px;">Sign Up as Seller</button>
+        </form>
+        <p style="margin-top: 15px; font-size: 14px; text-align: center; color: #ccc;">
+            Already have an account? <a href="#" id="go-to-login" style="color: #4da6ff; text-decoration: none;">Login here</a>
+        </p>
+    </div>
+
+    <div id="login-box" class="filter-section" style="display: none; margin-bottom: 0;">
+        <div class="filter-title" style="font-size: 18px; color: #fff; margin-bottom: 15px;">Seller Login</div>
+        <form id="login-form" style="display: flex; flex-direction: column; gap: 15px;">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label>Email ID:</label>
+                <input type="email" id="in-email" required style="padding: 10px; background-color: #1e1e1e; border: 1px solid #444; color: #fff; border-radius: 4px;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <label>Password:</label>
+                <input type="password" id="in-pass" required style="padding: 10px; background-color: #1e1e1e; border: 1px solid #444; color: #fff; border-radius: 4px;">
+            </div>
+            <button type="submit" class="rent-btn" style="padding: 12px; font-size: 16px;">Login</button>
+        </form>
+        <p style="margin-top: 15px; font-size: 14px; text-align: center; color: #ccc;">
+            Don't have an account? <a href="#" id="go-to-signup" style="color: #4da6ff; text-decoration: none;">Sign up here</a>
+        </p>
+    </div>
+
+</div>
+
+<script>
+    const signupBox = document.getElementById('signup-box');
+    const loginBox = document.getElementById('login-box');
+    
+   
+    document.getElementById('go-to-login').addEventListener('click', (e) => {
+        e.preventDefault();
+        signupBox.style.display = 'none';
+        loginBox.style.display = 'block';
+    });
+
+    document.getElementById('go-to-signup').addEventListener('click', (e) => {
+        e.preventDefault();
+        loginBox.style.display = 'none';
+        signupBox.style.display = 'block';
+    });
+
+ 
+    document.getElementById('signup-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('up-name').value;
+        const email = document.getElementById('up-email').value;
+        const pass = document.getElementById('up-pass').value;
+
+      
+        localStorage.setItem('seller_email', email);
+        localStorage.setItem('seller_pass', pass);
+        localStorage.setItem('seller_name', name);
+
+        alert('Registration Successful! Redirecting to your Add Item Dashboard...');
+        window.location.href = "seller.html"; 
+    });
+
+   
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('in-email').value;
+        const pass = document.getElementById('in-pass').value;
+
+        const savedEmail = localStorage.getItem('seller_email');
+        const savedPass = localStorage.getItem('seller_pass');
+
+        if(email === savedEmail && pass === savedPass) {
+            alert('Login Successful!');
+            window.location.href = "seller.html";
+        } else {
+            alert('Invalid Email or Password! Please Sign up first if you havent.');
+        }
+    });
+</script>
+</body>
+</html>
